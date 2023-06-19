@@ -1,0 +1,48 @@
+create database locadora;
+use locadora;
+
+create table tbCliente(
+codCliente int auto_increment primary key,
+cpf char(11),
+nome varchar(50) not null,
+cidade varchar(30),
+UF char (2) default "CE",
+dataCadastro date);
+
+create table tbCategoria(
+codCategoria int auto_increment primary key,
+nome varchar(20) not null
+);
+
+create table tbClasse(
+codClasse int auto_increment primary key,
+nome varchar(20) not null,
+preco_classe decimal (3,2) 
+);
+
+create table tbTitulo(
+codTitulo int auto_increment primary key,
+nome varchar (40) not null,
+ano int (4),
+codCategoria int,
+codClasse int,
+constraint fkCategoria foreign key (codCategoria) references tbCategoria (codCategoria) on delete set null on update cascade,
+constraint fkClasse foreign key (codClasse) references tbClasse (codClasse) on delete set null on update cascade
+);
+
+create table tbFilme(
+codFilme int auto_increment primary key,
+codTitulo int,
+nome_Distribuidora varchar (20),
+constraint fkCodTitulo foreign key (codTitulo) references tbTitulo (codTitulo) on delete set null on update cascade
+);
+
+create table tbEmprestimo(
+codCliente int,
+codFilme int,
+dataEmprestimo date,
+dataDevolucao date,
+dataDevolucaoEfetiva date,
+valorMulta float,
+primary key(codCliente, codFilme, dataEmprestimo)
+);
